@@ -1,5 +1,3 @@
-package create2_environment;
-
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -10,21 +8,34 @@ import java.util.TimerTask;
  */
 public class Controller {
 	final int startTimeDelay = 1;
-	final int timePeriod = 100;
+	final int timePeriod = 5;
 	
 	Window window;
+	World world;
 	
 	public Controller()
 	{
-		window = new Window();
+		world = new World(12, 10, 60);
+		new WorldCreate(world);
+		window = new Window(world);
 		
+		// a timer that calls the step method every timePeriod
 		new Timer().schedule(new TimerTask() 
 		{
 			public void run() 
 			{
-				
+				step();
 			}
 		}, startTimeDelay, timePeriod);
 	}
+	
+	public void step()
+	{
+		world.update();
+		window.update();
+		window.draw();
+	}
+	
+	// no need to even look at
 	public static void main(String[] args) {new Controller();}
 }

@@ -1,3 +1,5 @@
+//
+
 public class WorldCreate {
 	
 	public WorldCreate(World w)

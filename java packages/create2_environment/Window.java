@@ -1,4 +1,4 @@
-//
+package create2_environment;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -33,8 +33,15 @@ import javax.swing.border.BevelBorder;
 @SuppressWarnings("all")
 public class Window extends JFrame
 {
+	//
+	static Controller controller;
+	
+	//
 	Room room;
 	DepthPanel depthImg;
+	
+	JTextArea input = new JTextArea();
+	JTextArea output = new JTextArea();
 	
 	public Window(World world)
 	{
@@ -80,7 +87,6 @@ public class Window extends JFrame
 		scrollPane.setAlignmentY(Component.BOTTOM_ALIGNMENT);
 		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		
-		JTextArea input = new JTextArea();
 		input.setLineWrap(true);
 		scrollPane.setViewportView(input);
 		input.setMargin(new Insets(2, 2, 2, 2));
@@ -101,6 +107,11 @@ public class Window extends JFrame
 		IO.add(scrollPane, gbc_scrollPane);
 		
 		JButton btnNewButton = new JButton("Send Commands");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				press_sendCommand();
+			}
+		});
 		GridBagConstraints gbc_btnNewButton = new GridBagConstraints();
 		gbc_btnNewButton.weighty = 0.5;
 		gbc_btnNewButton.fill = GridBagConstraints.BOTH;
@@ -115,7 +126,6 @@ public class Window extends JFrame
 		scrollPane_1.setAlignmentY(Component.TOP_ALIGNMENT);
 		scrollPane_1.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		
-		JTextArea output = new JTextArea();
 		output.setMargin(new Insets(2, 2, 2, 2));
 		output.setLineWrap(true);
 		scrollPane_1.setViewportView(output);
@@ -144,6 +154,22 @@ public class Window extends JFrame
 
 		panel_1.add(room, BorderLayout.CENTER);
 	}
+	
+	public void press_sendCommand()
+	{
+		controller.io.set_input(input.getText());
+		input.setText("");
+	}
+	
+	public String get_output()
+	{
+		return output.getText();
+	}
+	public void set_output(String string)
+	{
+		output.setText(string);;
+	}
+	
 
 	class Menu extends JMenuBar
 	{
@@ -282,7 +308,7 @@ public class Window extends JFrame
 		{
 			int[] items = {0,0};
 			
-			items[0] = world.pixelsPerMeter;
+			items[0] = world.get_pixelsPerMeter();
 			items[1] = 1;
 			
 			return items;
